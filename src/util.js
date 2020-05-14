@@ -45,3 +45,18 @@ export function getHighestSafeWindowContext(self = global.window.self) {
   // as the top reachable one
   return self;
 }
+
+// Convert object with image src and intrinsic size into string
+// last option is default, without size
+export function convertSrcSetObjectsArrayToString(srcSetObjects) {
+  return srcSetObjects.reduce(
+    (srcSetString, srcObject) =>
+      srcSetString.concat(
+        `${srcObject.imageUrl}${
+          srcObject.intrinsicSize ? ` ${srcObject.intrinsicSize}` : ''
+        }`,
+        ', '
+      ),
+    ''
+  );
+}
