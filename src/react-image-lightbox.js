@@ -1665,6 +1665,7 @@ ReactImageLightbox.propTypes = {
 
   // Main display image urls and sizes
   // [ { intrinsicSize: '100w', imageUrl: 'https://image.jpg }]
+  // eslint-disable-next-line react/forbid-prop-types
   mainSrcSet: PropTypes.array,
 
   //-----------------------------
