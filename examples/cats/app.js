@@ -14,6 +14,7 @@ import image1Thumb from './images/1_thumb.jpg';
 import image2Thumb from './images/2_thumb.jpg';
 import image3Thumb from './images/3_thumb.jpg';
 import image4Thumb from './images/4_thumb.jpg';
+import image1200w from './images/1_200w.jpg';
 
 const images = [image1, image2, image3, image4];
 const thumbs = [image1Thumb, image2Thumb, image3Thumb, image4Thumb];
@@ -146,6 +147,10 @@ class App extends Component {
           prevSrcThumbnail={
             thumbs[(this.state.index + images.length - 1) % images.length]
           }
+          mainSrcSet={[
+            { imageUrl: images[this.state.index], intrinsicSize: '205w' },
+            { imageUrl: image1200w, intrinsicSize: '200w' },
+          ]}
           onCloseRequest={this.closeLightbox}
           onMovePrevRequest={this.movePrev}
           onMoveNextRequest={this.moveNext}
