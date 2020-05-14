@@ -6,6 +6,7 @@ import {
   getWindowWidth,
   getWindowHeight,
   getHighestSafeWindowContext,
+  convertSrcSetObjectsArrayToString,
 } from './util';
 import {
   KEYS,
@@ -285,6 +286,7 @@ class ReactImageLightbox extends Component {
 
   // Get info for the best suited image to display with the given srcType
   getBestImageForType(srcType) {
+    // imageSrc derived from props object?
     let imageSrc = this.props[srcType];
     let fitSizes = {};
 
@@ -297,6 +299,7 @@ class ReactImageLightbox extends Component {
     } else if (this.isImageLoaded(this.props[`${srcType}Thumbnail`])) {
       // Fall back to using thumbnail if the image has not been loaded
       imageSrc = this.props[`${srcType}Thumbnail`];
+      // seems to have some dynamic image serving here
       fitSizes = this.getFitSizes(
         this.imageCache[imageSrc].width,
         this.imageCache[imageSrc].height,
@@ -1278,6 +1281,11 @@ class ReactImageLightbox extends Component {
       onAfterOpen,
       imageCrossOrigin,
       reactModalProps,
+      /* 
+          for now main srcset will be image srcset
+          will need to take in the current srcset
+      */
+      mainSrcSet: imageSrcSet,
     } = this.props;
     const {
       zoomLevel,
@@ -1372,6 +1380,7 @@ class ReactImageLightbox extends Component {
         return;
       }
 
+      // taking in bestImageInfo here
       const imageSrc = bestImageInfo.src;
       if (discourageDownloads) {
         imageStyle.backgroundImage = `url('${imageSrc}')`;
@@ -1396,6 +1405,7 @@ class ReactImageLightbox extends Component {
             onDragStart={e => e.preventDefault()}
             style={imageStyle}
             src={imageSrc}
+            srcSet={convertSrcSetObjectsArrayToString(imageSrcSet)}
             key={imageSrc + keyEndings[srcType]}
             alt={
               typeof imageTitle === 'string' ? imageTitle : translate('Image')
@@ -1650,6 +1660,14 @@ ReactImageLightbox.propTypes = {
   nextSrcThumbnail: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
 
   //-----------------------------
+  // Image source sets
+  //-----------------------------
+
+  // Main display image urls and sizes
+  // [ { intrinsicSize: '100w', imageUrl: 'https://image.jpg }]
+  mainSrcSet: PropTypes.array,
+
+  //-----------------------------
   // Event Handlers
   //-----------------------------
 
@@ -1793,6 +1811,7 @@ ReactImageLightbox.defaultProps = {
   zoomInLabel: 'Zoom in',
   zoomOutLabel: 'Zoom out',
   imageLoadErrorMessage: 'This image failed to load',
+  mainSrcSet: [],
 };
 
 export default ReactImageLightbox;
